@@ -6,10 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JS Code Quiz</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">    
     <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://kit.fontawesome.com/4d535b9323.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h1>hello</h1>
+    <button id="view-hs-button"><i class="far fa-trophy"></i>Highscores</button>
+
+    <main>
+        <section class="card" id="timer-container">
+            <div id="timer-bar-container">
+                <div id="timer-bar-bg"></div>
+                <div id="timer-bar"></div>
+            </div>
+            <div id="countdown-container">
+                <span>60</span>
+            </div>
+        </section>
+    
+        <section class="card" id="dynamic-quiz-card">
+            <h1>Welcome to the JavaScript Code Quiz!</h1>
+    
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem sit id dignissimos nostrum, nemo doloribus quo maxime asperiores blanditiis pariatur saepe ducimus quis suscipit rem! Dicta, ducimus. Odit, in nam.</p>
+    
+            <button id="start-quiz-button">Start Quiz</button>
+        </section>
+    </main>
+    
 
     <script src="js/script.js"></script>
 </body>

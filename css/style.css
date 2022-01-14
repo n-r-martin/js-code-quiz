@@ -1,0 +1,114 @@
+/* apply a natural box layout model to all elements, but allowing components to change */
+html, * {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+  }
+  
+  *, *:before, *:after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 16px;
+  }
+
+  button {
+    padding: .5rem 1rem;
+    cursor: pointer;
+    background: white;
+    font-size: 1.1em;
+    border: 2px solid black;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  button#view-hs-button {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+  }
+
+  #view-hs-button i {
+      margin-right: .75rem;
+      font-weight: 400;
+  }
+
+  main {
+      width: 95%;
+      max-width: 760px;
+      margin: auto;
+      margin-top: 8rem;
+  }
+
+  section.card {
+      border: 2px solid black;
+      padding: 1rem;
+  }
+
+  section#timer-container {
+      height: 64px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: .5rem;
+  }
+
+  div#timer-bar-container {
+    width: 100%;
+    position: relative;
+  }
+
+  #timer-bar-container div {
+      height: 10px;
+      width: 100%;
+      background-color: black;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+  }
+
+  div#timer-bar {
+      width: 50%;
+      background-color: red;
+  }
+
+  div#countdown-container {
+    width: 10%;
+    position: relative;
+  }
+
+  div#countdown-container span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.4em;
+    font-weight: bold;
+  }
+
+  section#dynamic-quiz-card {
+    height: 340px;
+    margin-top: 1rem;
+    position: relative;
+  }
+
+  #dynamic-quiz-card h1 {
+      margin-bottom: 1.5rem;
+      font-size: 2em;
+      letter-spacing: -.5px;
+  }
+
+  #dynamic-quiz-card p {
+      margin-bottom: 1.5rem;
+  }
+
+  button#start-quiz-button {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      padding: .5rem 2rem;
+  }
