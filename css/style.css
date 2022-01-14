@@ -13,6 +13,8 @@ html, * {
   body {
     font-family: 'Noto Sans', sans-serif;
     font-size: 16px;
+    background-color: #FAF9F6;
+    color: #333;
   }
 
   button {
@@ -20,9 +22,15 @@ html, * {
     cursor: pointer;
     background: white;
     font-size: 1.1em;
-    border: 2px solid black;
+    border: 2px solid #333;
     font-weight: 700;
     text-transform: uppercase;
+    transition: background-color .3s, color .3s;
+  }
+
+  button:hover {
+      background-color:#333;
+      color: #fff;
   }
 
   button#view-hs-button {
@@ -44,8 +52,9 @@ html, * {
   }
 
   section.card {
-      border: 2px solid black;
+      border: 2px solid #333;
       padding: 1rem;
+      background-color: #fff;
   }
 
   section#timer-container {
@@ -64,7 +73,7 @@ html, * {
   #timer-bar-container div {
       height: 10px;
       width: 100%;
-      background-color: black;
+      background-color: #333;
       position: absolute;
       top: 50%;
       left: 0;
@@ -72,8 +81,8 @@ html, * {
   }
 
   div#timer-bar {
-      width: 50%;
-      background-color: red;
+      width: 100%;
+      background-color: green;
   }
 
   div#countdown-container {
@@ -86,7 +95,7 @@ html, * {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.4em;
+    font-size: 1.6em;
     font-weight: bold;
   }
 
@@ -102,7 +111,12 @@ html, * {
       letter-spacing: -.5px;
   }
 
+  #dynamic-quiz-card h2 {
+    letter-spacing: -.5px;
+}
+
   #dynamic-quiz-card p {
+      line-height: 1.5;
       margin-bottom: 1.5rem;
   }
 
