@@ -1,4 +1,5 @@
 // VARIABLES
+const quizCard = document.querySelector('#dynamic-quiz-card');
 const startButton = document.querySelector('#start-quiz-button');
 const timerBarElement = document.querySelector('#timer-bar');
 const countdownElement = document.querySelector('#countdown');
@@ -45,9 +46,18 @@ const questions = [{
 }
 ];
 
+// for (let i = 0; i < questions.length; i++) {
+    
+// }
 
 
-//Once the quiz begins, the first of a set of randomly selected questions should display
+
+// Once the quiz begins, the first of a set of randomly selected questions should display
+// Need to dynamically swap the content of quiz card container with the first item of the shuffledQuestions array
+// Access the object properties and render them to the UI
+
+
+
 
 
 //The timer should also begin
@@ -58,12 +68,18 @@ const questions = [{
 
 
 // FUNCTIONS
+
+// Function to get the Highscores from local storage
 function init() {
     getHighscores();
 }
 
+function getHighscores() {
+    
+}
 
-// A Fisher-Yates algorithm expressed in a JavaScript Function to shuffle the order of any array that is passed as an argument
+
+// A Fisher-Yates algorithm expressed in a JavaScript Function to shuffle the order of any array that is passed as an argument when the function is called. 
 function shuffleQuestions(...array) {
     var m = array.length, t, i;
   
@@ -87,6 +103,32 @@ function startQuiz() {
     let shuffledQuestions = shuffleQuestions(...questions);
     console.log('--- Shuffling magic ---')
     console.log(shuffledQuestions);
+    clearQuizCard();
+    renderQuestion();
+}
+
+function clearQuizCard() {
+    quizCard.innerHTML = '';
+}
+
+function renderQuestion() {
+    currentQuestionObj = questions[0];
+    currentQuestion = JSON.stringify(questions[0].question).replace(/"/g, ''); 
+    console.log(currentQuestion);
+    questionAnchor = document.createElement("p");
+    questionAnchor.textContent = currentQuestion;
+    quizCard.appendChild(questionAnchor);
+
+    answersList = document.createElement("ul");
+    quizCard.appendChild(answersList);
+
+    for (let i = 0; i < currentQuestionObj.choice.length; i++) {
+       console.log('grabbing choices');
+       choice = document.createElement("li");
+       choice.textContent = currentQuestionObj.choice[i]
+       answersList.appendChild(choice);  
+    }
+   
 }
 
 // function endGame() {
@@ -140,6 +182,10 @@ startButton.addEventListener('click', startQuiz)
 ///// ENHANCEMENTS
 // If the user answers 5 questions correctly in a row, they get a time bonus
 // Depending on score, display 'ninja, wizard, noob, etc'
+// Animations for right and wrong
+// Provide options for what kind of quiz
+// Pipe quiz data from elsewhere?
+
 
 
 

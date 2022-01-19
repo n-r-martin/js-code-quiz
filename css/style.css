@@ -120,6 +120,26 @@ html, * {
       margin-bottom: 1.5rem;
   }
 
+  #dynamic-quiz-card ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+#dynamic-quiz-card ul li {
+  padding: .5rem 1rem;
+  background-color: purple;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+}
+
+#dynamic-quiz-card ul li:hover {
+  background-color: red;
+}
+
   button#start-quiz-button {
       position: absolute;
       bottom: 1.5rem;
