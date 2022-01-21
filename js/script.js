@@ -3,6 +3,7 @@ const quizCard = document.querySelector('#dynamic-quiz-card');
 const startButton = document.querySelector('#start-quiz-button');
 const timerBarElement = document.querySelector('#timer-bar');
 const countdownElement = document.querySelector('#countdown');
+const endMessage = document.createElement('p');
 let countdown;
 let countdownCount = 60;
 
@@ -13,42 +14,38 @@ countdownElement.textContent = countdownCount;
 
 // AVAILABLE QUESTIONS 
 
-//Defining all the questions and storing them in an ibject
+//Defining all the questions and storing them in an object
 const questions = [{
     "question": "What is the capital of Bangladesh?",
     "choice": ["Dhaka", "Chittagong", "Sylhet"],
-    "correct": ["Dhaka"]
+    "correct": "Dhaka"
     },
     {
     "question": "What is the name of the largest planet in the solar system?",
     "choice": ["Earth", "Jupiter", "Uranus"], 
-    "correct": ["Jupiter"]
+    "correct": "Jupiter"
     },
     { 
     "question": "What is the capital of New York?",
     "choice": ["Manhattan", "NYC", "Albany"],  
-    "correct": ["Albany"]
+    "correct": "Albany"
    },
    { 
     "question": "How many bones does the human body have?",
     "choice": ["109", "206", "114"],  //quizObj[2].choice[0],quizObj[2].choice[1]
-    "correct": ["206"]
+    "correct": "206"
 },
 { 
     "question": "What is the alter ego of Batman?",
     "choice": ["Bruce Banner", "Bruce Wayne", "Tony Stark"],  //quizObj[2].choice[0],quizObj[2].choice[1]
-    "correct": ["Bruce Wayne"]
+    "correct": "Bruce Wayne"
 },
 { 
     "question": "How many books are there in the Harry Potter series?",
     "choice": ["7", "5", "8"],  //quizObj[2].choice[0],quizObj[2].choice[1]
-    "correct": ["7"]
+    "correct": "7"
 }
 ];
-
-// for (let i = 0; i < questions.length; i++) {
-    
-// }
 
 
 
@@ -78,6 +75,20 @@ function getHighscores() {
     
 }
 
+function startQuiz() {
+    console.log(questions)
+    let shuffledQuestions = shuffleQuestions(...questions);
+    console.log('--- Shuffling magic ---')
+    console.log(shuffledQuestions);
+    clearQuizCard();
+    renderQuestion(shuffledQuestions);
+      // startCountdown(); 
+}
+
+function endQuiz() {
+    endMessage.textContent = "Congratulations! You finsihed the game before time ran out. Enter your initials and click save to save your score!"
+    quizCard.append(endMessage);
+}
 
 // A Fisher-Yates algorithm expressed in a JavaScript Function to shuffle the order of any array that is passed as an argument when the function is called. 
 function shuffleQuestions(...array) {
@@ -97,39 +108,65 @@ function shuffleQuestions(...array) {
     return array;
   }
 
-function startQuiz() {
-    // startCountdown();
-    console.log(questions)
-    let shuffledQuestions = shuffleQuestions(...questions);
-    console.log('--- Shuffling magic ---')
-    console.log(shuffledQuestions);
-    clearQuizCard();
-    renderQuestion();
-}
-
 function clearQuizCard() {
     quizCard.innerHTML = '';
 }
 
-function renderQuestion() {
-    currentQuestionObj = questions[0];
-    currentQuestion = JSON.stringify(questions[0].question).replace(/"/g, ''); 
-    console.log(currentQuestion);
-    questionAnchor = document.createElement("p");
-    questionAnchor.textContent = currentQuestion;
-    quizCard.appendChild(questionAnchor);
-
-    answersList = document.createElement("ul");
+function renderQuestion(shuffledQuestions) {
+    const currentQuestionObj = shuffledQuestions[0];
+    const currentQuestion = JSON.stringify(currentQuestionObj.question).replace(/"/g, ''); 
+    const questionElement = document.createElement("p");
+    questionElement.textContent = currentQuestion;
+    quizCard.appendChild(questionElement);
+    const answersList = document.createElement("ul");
     quizCard.appendChild(answersList);
 
     for (let i = 0; i < currentQuestionObj.choice.length; i++) {
-       console.log('grabbing choices');
        choice = document.createElement("li");
-       choice.textContent = currentQuestionObj.choice[i]
+       choice.setAttribute("data-choice", currentQuestionObj.choice[i]);
+       choice.classList.add('choice');
+       choice.textContent = currentQuestionObj.choice[i];
        answersList.appendChild(choice);  
-    }
-   
+    }   
+    
+      //Adding Event Listeners to all the choices to then fire the checkAnswer function
+      document.querySelectorAll('.choice').forEach(item => {
+        item.addEventListener('click', checkAnswer);
+    }); 
+
+    function checkAnswer(evt) {
+        let selectedChoice = evt.target.getAttribute('data-choice');
+        console.log("checking answer for... " + selectedChoice);
+        if (selectedChoice === currentQuestionObj.correct) {
+            clearQuizCard();
+            shuffledQuestions.splice(0,1);
+            if (shuffledQuestions.length > 0) {
+                renderQuestion(shuffledQuestions); 
+            } else {
+                endQuiz();
+            }  
+        } else {
+            alert('try again!');
+        }
 }
+
+
+
+
+
+    // if (evt.target.getAttribute('data-choice') === currentQuestionObj.correct) {
+    //     alert("You chose correct!");
+    // }
+    //When user clicks on an answer
+    //Check if clicked on answer matches the correct answer which is stored in the object -- maybe change this to a string since we're stringifying the answers array
+    //Someway to use the .include() function??
+    //See screengrab for possible JSON Structure - match to a string OR an array index?? Are we randomizing how the list items display on the question render??      
+    //If the values match, then clear the question, splice the shuffled questions array, and renderQuestion again, which should be a new question at the 0 position in the index
+    //maybe in the render question function, call the correct answer and return it so it is available to be cross-checked??
+    //Wrong answers bg color to red -- consider styling of buttons
+}
+
+
 
 // function endGame() {
 //     clearInterval(countdown);
@@ -161,6 +198,7 @@ function renderQuestion() {
 
 //Clicking the Start Button will initiate the quiz
 startButton.addEventListener('click', startQuiz)
+
 
 
 
