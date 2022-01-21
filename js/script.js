@@ -3,7 +3,14 @@ const quizCard = document.querySelector('#dynamic-quiz-card');
 const startButton = document.querySelector('#start-quiz-button');
 const timerBarElement = document.querySelector('#timer-bar');
 const countdownElement = document.querySelector('#countdown');
-const endMessage = document.createElement('p');
+const endCardMessage = document.createElement('p');
+const endMessages = {
+    "allQuestionsAnswered": "Congratulations! You finsihed the game before time ran out. Enter your initials and click save to save your score!",
+    "timesUp": "Time is up bitch..."
+}
+
+
+
 let countdown;
 let countdownCount = 60;
 
@@ -82,12 +89,19 @@ function startQuiz() {
     console.log(shuffledQuestions);
     clearQuizCard();
     renderQuestion(shuffledQuestions);
-      // startCountdown(); 
+    startCountdown(); 
 }
 
 function endQuiz() {
-    endMessage.textContent = "Congratulations! You finsihed the game before time ran out. Enter your initials and click save to save your score!"
-    quizCard.append(endMessage);
+    endCardMessage.textContent = endMessages.allQuestionsAnswered;
+    quizCard.append(endCardMessage);
+    clearInterval(countdown);
+}
+
+function timeIsUp() {
+    clearQuizCard();
+    endCardMessage.textContent = endMessages.timesUp;
+    quizCard.append(endCardMessage);
 }
 
 // A Fisher-Yates algorithm expressed in a JavaScript Function to shuffle the order of any array that is passed as an argument when the function is called. 
@@ -146,10 +160,23 @@ function renderQuestion(shuffledQuestions) {
                 endQuiz();
             }  
         } else {
-            alert('try again!');
+            //Need to find a way to subtract time from countdown when user chooses wrong
+            countdownCount = countdownCount - 5;
         }
+    }
 }
 
+function startCountdown() {
+    countdown = setInterval(function () {
+        countdownCount--;
+        countdownElement.textContent = countdownCount;
+
+        if (countdownCount === 0) {
+            clearInterval(countdown);
+            timeIsUp();
+        } 
+    }, 1000);
+}
 
 
 
@@ -164,14 +191,6 @@ function renderQuestion(shuffledQuestions) {
     //If the values match, then clear the question, splice the shuffled questions array, and renderQuestion again, which should be a new question at the 0 position in the index
     //maybe in the render question function, call the correct answer and return it so it is available to be cross-checked??
     //Wrong answers bg color to red -- consider styling of buttons
-}
-
-
-
-// function endGame() {
-//     clearInterval(countdown);
-//     setScore();  
-// }
 
 // function setWins() {
 //     localStorage.setItem("score", countdownCount);
@@ -179,17 +198,7 @@ function renderQuestion(shuffledQuestions) {
   
 
 
-// function startCountdown() {
-//     countdown = setInterval(function () {
-//         countdownCount--;
 
-//         if (countdownCount > 0 && allQuestionsAnswered) {
-//             endGame();
-//         } else if (countdownCount === 0) {
-//             endGame();
-//         }
-//     }, 1000);
-// }
 
 
 
