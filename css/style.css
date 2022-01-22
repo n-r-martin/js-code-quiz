@@ -33,6 +33,13 @@ html, * {
       color: #fff;
   }
 
+  button.start-quiz-button {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    padding: .5rem 2rem;
+}
+
   button#view-hs-button {
       position: absolute;
       top: 1rem;
@@ -113,6 +120,7 @@ html, * {
 
   #dynamic-quiz-card h2 {
     letter-spacing: -.5px;
+    margin-bottom: 1.5rem;
 }
 
   #dynamic-quiz-card p {
@@ -130,19 +138,13 @@ html, * {
 
 #dynamic-quiz-card ul li {
   padding: .5rem 1rem;
-  background-color: purple;
+  background-color: #5d13e7;
   border-radius: 5px;
   color: #fff;
   cursor: pointer;
 }
 
 #dynamic-quiz-card ul li:hover {
-  background-color: red;
+  background-color: #291f71;
 }
 
-  button#start-quiz-button {
-      position: absolute;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      padding: .5rem 2rem;
-  }

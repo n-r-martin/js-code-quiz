@@ -1,21 +1,28 @@
 // VARIABLES
 const quizCard = document.querySelector('#dynamic-quiz-card');
-const startButton = document.querySelector('#start-quiz-button');
+const startButton = document.querySelector('.start-quiz-button');
 const timerBarElement = document.querySelector('#timer-bar');
 const countdownElement = document.querySelector('#countdown');
-const endCardMessage = document.createElement('p');
-const endMessages = {
-    "allQuestionsAnswered": "Congratulations! You finsihed the game before time ran out. Enter your initials and click save to save your score!",
-    "timesUp": "Time is up bitch..."
+const endCardTitleElement = document.createElement('h2');
+const endCardTitleContent = {
+    "allQuestionsAnswered": "Great Job!",
+    "timesUp": "Bummer!"
+}
+const endCardMessageElement = document.createElement('p');
+const endCardMessageContent = {
+    "allQuestionsAnswered": "You completed the quiz before time ran out and finished with a score of:",
+    "timesUp": "You ran out of time before you could finish the quiz. But no worries because you can retake as many times as you want. You got this!"
 }
 
+const retakeQuizButton = document.createElement('button');
+retakeQuizButton.classList.add('start-quiz-button');
+const retakeQuizButtonContent = {
+    "allQuestionsAnswered": "Take Again!",
+    "timesUp": "Try Again!"
+}
 
-
-let countdown;
+// DEFAULT COUNTDOWN VALUES ON PAGE LOAD
 let countdownCount = 60;
-
-
-// DEFAULT UI STATES
 countdownElement.textContent = countdownCount;
 
 
@@ -93,15 +100,29 @@ function startQuiz() {
 }
 
 function endQuiz() {
-    endCardMessage.textContent = endMessages.allQuestionsAnswered;
-    quizCard.append(endCardMessage);
     clearInterval(countdown);
+    clearQuizCard();
+    endCardTitleElement.textContent = endCardTitleContent.allQuestionsAnswered;
+    endCardMessageElement.textContent = endCardMessageContent.allQuestionsAnswered;
+    retakeQuizButton.textContent = retakeQuizButtonContent.allQuestionsAnswered;
+    renderEndCardTags();
 }
 
 function timeIsUp() {
+    //Calling this again in case the user chooses incorrectly with less than five seconds left so UI does not show/capture a negative value
+    countdownCount = 0;
+    countdownElement.textContent = countdownCount;
     clearQuizCard();
-    endCardMessage.textContent = endMessages.timesUp;
-    quizCard.append(endCardMessage);
+    endCardTitleElement.textContent = endCardTitleContent.timesUp;
+    endCardMessageElement.textContent = endCardMessageContent.timesUp;
+    retakeQuizButton.textContent = retakeQuizButtonContent.timesUp;
+    renderEndCardTags();
+}
+
+function renderEndCardTags() {
+    quizCard.append(endCardTitleElement);
+    quizCard.append(endCardMessageElement);
+    quizCard.append(retakeQuizButton);
 }
 
 // A Fisher-Yates algorithm expressed in a JavaScript Function to shuffle the order of any array that is passed as an argument when the function is called. 
@@ -139,6 +160,7 @@ function renderQuestion(shuffledQuestions) {
        choice = document.createElement("li");
        choice.setAttribute("data-choice", currentQuestionObj.choice[i]);
        choice.classList.add('choice');
+       choice.setAttribute("id", "choice-" +i);
        choice.textContent = currentQuestionObj.choice[i];
        answersList.appendChild(choice);  
     }   
@@ -160,18 +182,21 @@ function renderQuestion(shuffledQuestions) {
                 endQuiz();
             }  
         } else {
-            //Need to find a way to subtract time from countdown when user chooses wrong
             countdownCount = countdownCount - 5;
+            evt.target.style.backgroundColor = 'red';
         }
     }
 }
 
 function startCountdown() {
+    countdownCount = 60;
+    countdownElement.textContent = countdownCount;
+
     countdown = setInterval(function () {
         countdownCount--;
         countdownElement.textContent = countdownCount;
 
-        if (countdownCount === 0) {
+        if (countdownCount <= 0) {
             clearInterval(countdown);
             timeIsUp();
         } 
@@ -206,7 +231,11 @@ function startCountdown() {
 // EVENT LISTENERS
 
 //Clicking the Start Button will initiate the quiz
-startButton.addEventListener('click', startQuiz)
+startButton.addEventListener('click', startQuiz);
+retakeQuizButton.addEventListener('click', function () {
+    
+    startQuiz();
+});
 
 
 
