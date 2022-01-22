@@ -18,32 +18,41 @@ html, * {
   }
 
   button {
-    padding: .5rem 1rem;
+    padding: 1rem;
     cursor: pointer;
-    background: white;
+    background-color: #5d13e7;
+    border-radius: 5px;
+    border: none;
     font-size: 1.1em;
-    border: 2px solid #333;
     font-weight: 700;
     text-transform: uppercase;
     transition: background-color .3s, color .3s;
+    color: #fff;
   }
 
   button:hover {
-      background-color:#333;
-      color: #fff;
+      background-color: #291f71;;
   }
 
   button.start-quiz-button {
     position: absolute;
     bottom: 1.5rem;
     right: 1.5rem;
-    padding: .5rem 2rem;
 }
 
   button#view-hs-button {
       position: absolute;
       top: 1rem;
       right: 1rem;
+      background-color: #fff;
+      border: 2px solid #333;
+      color: #333;
+  }
+
+  button#view-hs-button:hover {
+    color: #fff;
+    background-color: #333;
+    transition: background-color .3s, color .3s;
   }
 
   #view-hs-button i {
@@ -89,7 +98,9 @@ html, * {
 
   div#timer-bar {
       width: 100%;
-      background-color: green;
+      background-color: #2cb978;
+      border-radius: 5px;
+      transition: width 1000ms linear, margin-left 1000ms linear, background-color 300ms linear;
   }
 
   div#countdown-container {
@@ -121,7 +132,11 @@ html, * {
   #dynamic-quiz-card h2 {
     letter-spacing: -.5px;
     margin-bottom: 1.5rem;
-}
+  }
+
+  #dynamic-quiz-card h3 {
+    font-size: 3em;
+  }
 
   #dynamic-quiz-card p {
       line-height: 1.5;
@@ -134,7 +149,7 @@ html, * {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 8px;
-}
+  }
 
 #dynamic-quiz-card ul li {
   padding: .5rem 1rem;
@@ -147,4 +162,34 @@ html, * {
 #dynamic-quiz-card ul li:hover {
   background-color: #291f71;
 }
+
+#dynamic-quiz-card input {
+    height: 40px;
+    width: 70px;
+    padding: 0.5rem;
+    margin-top: 1rem;
+}
+
+#dynamic-quiz-card input:focus {
+  outline: none;
+}
+
+button#save-initials-button {
+    display: inline-block;
+    margin-left: 8px;
+    height: 40px;
+    vertical-align: middle;
+    padding: 0 1rem;
+    font-size: 16px;
+    background-color: #fff;
+    border: 2px solid #333;
+    color: #333;
+}
+
+button#save-initials-button:hover {
+  color: #fff;
+  background-color: #333;
+  transition: background-color .3s, color .3s;
+}
+
 

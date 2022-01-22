@@ -11,18 +11,27 @@ const endCardTitleContent = {
 const endCardMessageElement = document.createElement('p');
 const endCardMessageContent = {
     "allQuestionsAnswered": "You completed the quiz before time ran out and finished with a score of:",
-    "timesUp": "You ran out of time before you could finish the quiz. But no worries because you can retake as many times as you want. You got this!"
+    "timesUp": "You ran out of time before you could finish the quiz. But no worries because you can retake it as many times as you want. You got this!"
 }
+
+const finalScoreElement = document.createElement('h3');
+const initialsInput = document.createElement('input');
+initialsInput.setAttribute('id', 'initials-input');
+initialsInput.setAttribute('maxlength', 3);
+
+const saveInitialsButton = document.createElement('button');
+saveInitialsButton.setAttribute('id', 'save-initials-button');
+saveInitialsButton.textContent = 'Save Score';
 
 const retakeQuizButton = document.createElement('button');
 retakeQuizButton.classList.add('start-quiz-button');
 const retakeQuizButtonContent = {
-    "allQuestionsAnswered": "Take Again!",
+    "allQuestionsAnswered": "Take Quiz Again!",
     "timesUp": "Try Again!"
 }
 
 // DEFAULT COUNTDOWN VALUES ON PAGE LOAD
-let countdownCount = 60;
+let countdownCount = 100;
 countdownElement.textContent = countdownCount;
 
 
@@ -106,12 +115,14 @@ function endQuiz() {
     endCardMessageElement.textContent = endCardMessageContent.allQuestionsAnswered;
     retakeQuizButton.textContent = retakeQuizButtonContent.allQuestionsAnswered;
     renderEndCardTags();
+    renderWinUI();
 }
 
 function timeIsUp() {
     //Calling this again in case the user chooses incorrectly with less than five seconds left so UI does not show/capture a negative value
     countdownCount = 0;
     countdownElement.textContent = countdownCount;
+    
     clearQuizCard();
     endCardTitleElement.textContent = endCardTitleContent.timesUp;
     endCardMessageElement.textContent = endCardMessageContent.timesUp;
@@ -123,6 +134,13 @@ function renderEndCardTags() {
     quizCard.append(endCardTitleElement);
     quizCard.append(endCardMessageElement);
     quizCard.append(retakeQuizButton);
+}
+
+function renderWinUI() {
+    finalScoreElement.textContent = countdownCount;
+    quizCard.append(finalScoreElement);
+    quizCard.append(initialsInput);
+    quizCard.append(saveInitialsButton);
 }
 
 // A Fisher-Yates algorithm expressed in a JavaScript Function to shuffle the order of any array that is passed as an argument when the function is called. 
@@ -183,20 +201,33 @@ function renderQuestion(shuffledQuestions) {
             }  
         } else {
             countdownCount = countdownCount - 5;
+            timerBarPosition = timerBarPosition + 5;
             evt.target.style.backgroundColor = 'red';
         }
     }
 }
 
 function startCountdown() {
-    countdownCount = 60;
+    countdownCount = 100;
+    timerBarPosition = 0;
     countdownElement.textContent = countdownCount;
+    timerBarElement.style.width = '100%';
+    timerBarElement.style.marginLeft = '0%'
 
     countdown = setInterval(function () {
         countdownCount--;
+        timerBarPosition++;
+        let timerBarWidth = countdownCount.toString();
+        timerBarElement.style.width = timerBarWidth + '%';
+        let stringfiedBarPosition = timerBarPosition.toString();
+        timerBarElement.style.marginLeft = stringfiedBarPosition + '%';
         countdownElement.textContent = countdownCount;
 
-        if (countdownCount <= 0) {
+        if (countdownCount <= 50 && countdownCount > 25) {
+            timerBarElement.style.backgroundColor = '#ffd615';
+        } else if (countdownCount <= 25 && countdownCount > 0) {
+            timerBarElement.style.backgroundColor = 'red';
+        } else if (countdownCount <= 0) {
             clearInterval(countdown);
             timeIsUp();
         } 
@@ -233,7 +264,6 @@ function startCountdown() {
 //Clicking the Start Button will initiate the quiz
 startButton.addEventListener('click', startQuiz);
 retakeQuizButton.addEventListener('click', function () {
-    
     startQuiz();
 });
 
