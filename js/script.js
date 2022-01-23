@@ -1,4 +1,5 @@
-// VARIABLES
+//////// VARIABLES ////////
+
 const quizCard = document.querySelector('#dynamic-quiz-card');
 const startButton = document.querySelector('.start-quiz-button');
 const viewHighScoresButton = document.querySelector('#view-hs-button');
@@ -33,12 +34,14 @@ const retakeQuizButtonContent = {
     "timesUp": "Try Again!"
 }
 
-// DEFAULT COUNTDOWN VALUES ON PAGE LOAD
+// Default countdown values on page load - so there is something in the UI befoe the quiz is started for the first time;
 let countdownCount = 100;
 countdownElement.textContent = countdownCount;
 
+// Must be defined as empty array for the first time a scored is ever saved (or if the user has cleared local storage). After this it will always be defined as a parsed array from local storage, even if the user reloads
+let hiScoresArr = [];
 
-// AVAILABLE QUESTIONS 
+//////// AVAILABLE QUESTIONS ////////
 
 //Defining all the questions and storing them in an object
 const questions = [{
@@ -73,31 +76,12 @@ const questions = [{
 }
 ];
 
+//////// FUNCTIONS ////////
 
-
-// Once the quiz begins, the first of a set of randomly selected questions should display
-// Need to dynamically swap the content of quiz card container with the first item of the shuffledQuestions array
-// Access the object properties and render them to the UI
-
-
-
-
-
-//The timer should also begin
-//As long as there is time left the user is still able to progress through the quiz
-//If the user answers a question incorrectly, time (5 seconds) is subratcted from the timer, and the user must try to answer the question again
-//If the user answers correctly, the next question is displayed
-
-let hiScoresArr = [];
-// let hiScoresArr = JSON.parse(localStorage.getItem('Scores'));
-
-
-
-// FUNCTIONS
-
-// Function to get the Highscores from local storage
-
+// On init() check local storage for scores and render them if the exist
 function init() {
+
+    // Checking if there is a key in local storage call Scores - necessary because we cannot push to an empty array if it's parsed from local storage when we try to save the first ever score (or if user has cleared local storage since last they saved a score)
     if (localStorage.getItem('Scores')) {
         hiScoresArr = JSON.parse(localStorage.getItem('Scores'));
     } else {
@@ -107,7 +91,9 @@ function init() {
     renderHighScores();
 }
 
+// Render high scores to the UI, if any exist
 function renderHighScores() {
+    // First clear the UI so scores are not duplicated
     scoresList.innerHTML = '';
     if (hiScoresArr) {
         let sortedScores = hiScoresArr.sort().reverse();
@@ -117,80 +103,39 @@ function renderHighScores() {
             scoresList.append(highScoreItem);
         }
     } else {
-        // Do nothing
+        // Do nothing -- add message for no high scores
     }
 }
 
-
-
-
+// Saving a score to high scores on click of Save Score button
 function saveScore() {
     let currentInitials = initialsInput.value;
 
-    // Changed button style to green and disable so score cant be saved again.
-
+    // If initals entry field has a mimimum value of 1, convert the score and push it, along with the initals entry value to the local storage array as a single string
     if (initialsInput.value.length > 1) {
         stringifiedScore = countdownCount.toString();
         hiScoresArr.push(stringifiedScore + ' - ' + currentInitials);
         localStorage.setItem('Scores', JSON.stringify(hiScoresArr));
+        // Render the scores again so they are immediately visible without having to relaod the page
         renderHighScores();
         saveScoreButton.textContent = 'Score Saved!'
         saveScoreButton.disabled = true;
+
+    // Wont allow user to save if initials are left empty 
     } else {
         alert('Must enter initials to save score!');
     }
 }
 
-// function renderHighScores() {
-       
-// }
-
+// Start the quiz once the Start Quiz or Take Again buttons are clicked
 function startQuiz() {
-    console.log(questions)
+    // Create a new array of shuffled questions taken from the available questions object (values defined above) - function defined below
     let shuffledQuestions = shuffleQuestions(...questions);
-    console.log('--- Shuffling magic ---')
-    console.log(shuffledQuestions);
+    // Clear the quiz card of UI before rendering the first question
     clearQuizCard();
+    // Render the first question in the shuffled questions array
     renderQuestion(shuffledQuestions);
     startCountdown(); 
-}
-
-function endQuiz() {
-    clearInterval(countdown);
-    clearQuizCard();
-    endCardTitleElement.textContent = endCardTitleContent.allQuestionsAnswered;
-    endCardMessageElement.textContent = endCardMessageContent.allQuestionsAnswered;
-    retakeQuizButton.textContent = retakeQuizButtonContent.allQuestionsAnswered;
-    renderEndCardTags();
-    renderWinUI();
-}
-
-function timeIsUp() {
-    //Calling this again in case the user chooses incorrectly with less than five seconds left so UI does not show/capture a negative value
-    countdownCount = 0;
-    countdownElement.textContent = countdownCount;
-    
-    clearQuizCard();
-    endCardTitleElement.textContent = endCardTitleContent.timesUp;
-    endCardMessageElement.textContent = endCardMessageContent.timesUp;
-    retakeQuizButton.textContent = retakeQuizButtonContent.timesUp;
-    renderEndCardTags();
-}
-
-function renderEndCardTags() {
-    quizCard.append(endCardTitleElement);
-    quizCard.append(endCardMessageElement);
-    quizCard.append(retakeQuizButton);
-}
-
-function renderWinUI() {
-    finalScoreElement.textContent = countdownCount;
-    quizCard.append(finalScoreElement);
-    initialsInput.value = '';
-    quizCard.append(initialsInput);
-    quizCard.append(saveScoreButton);
-    saveScoreButton.textContent = 'Save Score!';
-    saveScoreButton.disabled = false;
 }
 
 // A Fisher-Yates algorithm expressed in a JavaScript Function to shuffle the order of any array that is passed as an argument when the function is called. 
@@ -211,11 +156,14 @@ function shuffleQuestions(...array) {
     return array;
   }
 
+// Useful function to call whenever the current UI needs to be cleared
 function clearQuizCard() {
     quizCard.innerHTML = '';
 }
 
+// Programmatically render one question at a time and repeat until shuffled questions array is empty - then end the quiz if time is still remaining
 function renderQuestion(shuffledQuestions) {
+    // Create a variable from which we will generat all UI for the current question
     const currentQuestionObj = shuffledQuestions[0];
     const currentQuestion = JSON.stringify(currentQuestionObj.question).replace(/"/g, ''); 
     const questionElement = document.createElement("p");
@@ -224,6 +172,7 @@ function renderQuestion(shuffledQuestions) {
     const answersList = document.createElement("ul");
     quizCard.appendChild(answersList);
 
+    // Render all answwr choices associated with current question
     for (let i = 0; i < currentQuestionObj.choice.length; i++) {
        choice = document.createElement("li");
        choice.setAttribute("data-choice", currentQuestionObj.choice[i]);
@@ -238,17 +187,22 @@ function renderQuestion(shuffledQuestions) {
         item.addEventListener('click', checkAnswer);
     }); 
 
+    // Check answer when any answer is clicked - using 'evt' to get the data-choice of the clicked element a cross checking it against the 'correct' property of the current question objact
     function checkAnswer(evt) {
         let selectedChoice = evt.target.getAttribute('data-choice');
         console.log("checking answer for... " + selectedChoice);
+
+        // If select answer matches, clear the UI, splice the shuffled questions array at the first position, and repeat unitl the array the whole process until the array is empty
         if (selectedChoice === currentQuestionObj.correct) {
             clearQuizCard();
             shuffledQuestions.splice(0,1);
             if (shuffledQuestions.length > 0) {
                 renderQuestion(shuffledQuestions); 
+            // call end quiz function if shuffled questions array is empty
             } else {
                 endQuiz();
             }  
+        // if user chooses incorrectly, subratct 5 seconds from timer and style the clicked answer to indicate it's incorrect
         } else {
             countdownCount = countdownCount - 5;
             timerBarPosition = timerBarPosition + 5;
@@ -257,6 +211,50 @@ function renderQuestion(shuffledQuestions) {
     }
 }
 
+// Scenario in which user answers all questions before time runs out
+function endQuiz() {
+    clearInterval(countdown);
+    clearQuizCard();
+    endCardTitleElement.textContent = endCardTitleContent.allQuestionsAnswered;
+    endCardMessageElement.textContent = endCardMessageContent.allQuestionsAnswered;
+    retakeQuizButton.textContent = retakeQuizButtonContent.allQuestionsAnswered;
+    renderEndCardTags();
+
+     // Render UI specific to a successful completion scenario - see below
+    renderWinUI();
+}
+
+// Scenario in which user runs out of time before answering all questions
+function timeIsUp() {
+    // Call this again in case the user chooses incorrectly with less than five seconds left, so UI does not show/capture a negative value
+    countdownCount = 0;
+    countdownElement.textContent = countdownCount;
+    clearQuizCard();
+    endCardTitleElement.textContent = endCardTitleContent.timesUp;
+    endCardMessageElement.textContent = endCardMessageContent.timesUp;
+    retakeQuizButton.textContent = retakeQuizButtonContent.timesUp;
+    renderEndCardTags();
+}
+
+// Dynamic content called in both scenarios
+function renderEndCardTags() {
+    quizCard.append(endCardTitleElement);
+    quizCard.append(endCardMessageElement);
+    quizCard.append(retakeQuizButton);
+}
+
+// Rneder the score and the ability to enter initials and save both to the high scores list
+function renderWinUI() {
+    finalScoreElement.textContent = countdownCount;
+    quizCard.append(finalScoreElement);
+    initialsInput.value = '';
+    quizCard.append(initialsInput);
+    quizCard.append(saveScoreButton);
+    saveScoreButton.textContent = 'Save Score!';
+    saveScoreButton.disabled = false;
+}
+
+// Countdown function
 function startCountdown() {
     countdownCount = 100;
     timerBarPosition = 0;
@@ -285,33 +283,9 @@ function startCountdown() {
         } 
     }, 1000);
 }
-
-
-
-
-    // if (evt.target.getAttribute('data-choice') === currentQuestionObj.correct) {
-    //     alert("You chose correct!");
-    // }
-    //When user clicks on an answer
-    //Check if clicked on answer matches the correct answer which is stored in the object -- maybe change this to a string since we're stringifying the answers array
-    //Someway to use the .include() function??
-    //See screengrab for possible JSON Structure - match to a string OR an array index?? Are we randomizing how the list items display on the question render??      
-    //If the values match, then clear the question, splice the shuffled questions array, and renderQuestion again, which should be a new question at the 0 position in the index
-    //maybe in the render question function, call the correct answer and return it so it is available to be cross-checked??
-    //Wrong answers bg color to red -- consider styling of buttons
-
-// function setWins() {
-//     localStorage.setItem("score", countdownCount);
-//   }
   
 
-
-
-
-
-
-
-// EVENT LISTENERS
+//////// EVENT LISTENERS ////////
 
 //Clicking the Start Button will initiate the quiz
 startButton.addEventListener('click', startQuiz);
@@ -329,37 +303,24 @@ closeButton.addEventListener('click', function () {
     highScoresElement.style.display = 'none';
 });
 
-
-
-
+// Call Init function - defined abover 
 init ();
 
 
 
 
-//If the timer reaches zero, the user is no longer able to answer any questions
-//The user is presented with their score, which is equal to the time remaining
-//The user's score is stored to localData and also presented in the highscores UI.
-//The user is presented with an option to take the quiz again, which will reset the quiz and timer
 
-//When the user accesses the highscores list, they are presented with a list of all scores stored in localData
-//The scores are listed in descending order
-
-
-
-///// ENHANCEMENTS
-// If the user answers 5 questions correctly in a row, they get a time bonus
-// Depending on score, display 'ninja, wizard, noob, etc'
-// Animations for right and wrong
-// Provide options for what kind of quiz
-// Pipe quiz data from elsewhere?
-
-
-
-
-
-// QUESTIONS LIST
+//////// ADDITIONAL QUESTIONS LIST ////////
 
 /* What is the operator used to add a new value to the previous one, and store it in the same variable? 
     ANSWER: =+  
 */
+
+//////// ENHANCEMENTS ////////
+
+/* If the user answers 5 questions correctly in a row, they get a time bonus?
+    Animations for right and wrong? 
+    Provide options for what kind of quiz?
+    Pipe in quiz data from elsewhere?
+*/ 
+
