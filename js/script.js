@@ -4,7 +4,9 @@ const quizCard = document.querySelector('#dynamic-quiz-card');
 const startButton = document.querySelector('.start-quiz-button');
 const viewHighScoresButton = document.querySelector('#view-hs-button');
 const highScoresElement = document.querySelector('#high-scores-container');
-const scoresList = document.querySelector('#high-scores-list');
+const highScoresContent = document.querySelector('#high-scores-content');
+const scoresList = document.createElement('ul');
+scoresList.setAttribute('id', 'high-scores-list');
 const closeButton = document.querySelector('#close-btn');
 const timerBarElement = document.querySelector('#timer-bar');
 const countdownElement = document.querySelector('#countdown');
@@ -94,16 +96,27 @@ function init() {
 // Render high scores to the UI, if any exist
 function renderHighScores() {
     // First clear the UI so scores are not duplicated
+    highScoresContent.innerHTML = '';
     scoresList.innerHTML = '';
-    if (hiScoresArr) {
+    if (hiScoresArr.length > 0) {
         let sortedScores = hiScoresArr.sort().reverse();
         for (let i = 0; i < sortedScores.length; i++) {
             highScoreItem = document.createElement('li');
             highScoreItem.textContent = sortedScores[i];
             scoresList.append(highScoreItem);
         }
+    highScoresContent.append(scoresList);
+
     } else {
-        // Do nothing -- add message for no high scores
+        highScoresContent.innerHTML = '';
+        const noScoresElementContainer = document.createElement('div');
+        const noScoresImg = document.createElement('img');
+        noScoresImg.setAttribute('src', 'img/shrugIcon.svg');
+        const noScoresMessage = document.createElement('p');
+        noScoresMessage.textContent = "There aren't any scores on the board yet..."
+        noScoresElementContainer.append(noScoresImg);
+        noScoresElementContainer.append(noScoresMessage);
+        highScoresContent.append(noScoresElementContainer);
     }
 }
 

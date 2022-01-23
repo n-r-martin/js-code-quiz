@@ -212,6 +212,7 @@ aside#high-scores-container {
   right: 0;
   z-index: 9999;
   display: none;
+  padding: 4rem 1rem 0;
 }
 
 #high-scores-container i {
@@ -222,11 +223,7 @@ aside#high-scores-container {
   font-size: 2em;
 }
 
-#high-scores-content {
-  margin: 4rem 1rem;
-}
-
-#high-scores-content h2 {
+#high-scores-container h2 {
   border-bottom: 2px solid #333;
   padding-bottom: 1rem;
 }
