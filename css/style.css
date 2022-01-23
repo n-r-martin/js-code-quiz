@@ -205,8 +205,9 @@ button#save-score-button:disabled {
 aside#high-scores-container {
   width: 30%;
   height: 100%;
-  border-left: 2px solid #333;
-  background-color: #FAF9F6;
+  border-left: 2px solid #FFF;
+  background-color: #333;
+  color: #fff;
   position: absolute;
   top: 0;
   right: 0;
@@ -224,8 +225,16 @@ aside#high-scores-container {
 }
 
 #high-scores-container h2 {
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid #fff;
   padding-bottom: 1rem;
+}
+
+#high-scores-container img {
+  filter: invert(99%) sepia(31%) saturate(0%) hue-rotate(189deg) brightness(112%) contrast(101%);
+}
+
+.blur {
+  filter: blur(10px);
 }
 
 #high-scores-content ul {

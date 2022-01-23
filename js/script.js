@@ -1,5 +1,6 @@
 //////// VARIABLES ////////
 
+const mainElement = document.querySelector('#primary-content');
 const quizCard = document.querySelector('#dynamic-quiz-card');
 const startButton = document.querySelector('.start-quiz-button');
 const viewHighScoresButton = document.querySelector('#view-hs-button');
@@ -310,10 +311,12 @@ saveScoreButton.addEventListener('click', saveScore);
 
 viewHighScoresButton.addEventListener('click', function () {
     highScoresElement.style.display = 'block';
+    mainElement.setAttribute('class', 'blur');
 });
 
 closeButton.addEventListener('click', function () {
     highScoresElement.style.display = 'none';
+    mainElement.removeAttribute('class', 'blur');
 });
 
 // Call Init function - defined abover 
