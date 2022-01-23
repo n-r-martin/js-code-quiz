@@ -5,10 +5,12 @@ const quizCard = document.querySelector('#dynamic-quiz-card');
 const startButton = document.querySelector('.start-quiz-button');
 const viewHighScoresButton = document.querySelector('#view-hs-button');
 const highScoresElement = document.querySelector('#high-scores-container');
+const blackFilter = document.querySelector('#black-filter');
 const highScoresContent = document.querySelector('#high-scores-content');
 const scoresList = document.createElement('ul');
 scoresList.setAttribute('id', 'high-scores-list');
 const closeButton = document.querySelector('#close-btn');
+const clearScoresButton = document.querySelector('#clear-scores-btn');
 const timerBarElement = document.querySelector('#timer-bar');
 const countdownElement = document.querySelector('#countdown');
 const endCardTitleElement = document.createElement('h2');
@@ -309,14 +311,25 @@ retakeQuizButton.addEventListener('click', function () {
 
 saveScoreButton.addEventListener('click', saveScore);
 
-viewHighScoresButton.addEventListener('click', function () {
+viewHighScoresButton.addEventListener('click', function (evt) {
+    evt.preventDefault;
     highScoresElement.style.display = 'block';
+    blackFilter.style.display = 'block';
     mainElement.setAttribute('class', 'blur');
 });
 
 closeButton.addEventListener('click', function () {
     highScoresElement.style.display = 'none';
+    blackFilter.style.display = 'none';
     mainElement.removeAttribute('class', 'blur');
+});
+
+clearScoresButton.addEventListener('click', function () {
+    // evt.preventDefault;
+    console.log('Cleared highscores');
+    localStorage.clear();
+    hiScoresArr = [];
+    renderHighScores();
 });
 
 // Call Init function - defined abover 
