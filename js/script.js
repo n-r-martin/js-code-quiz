@@ -1,6 +1,10 @@
 // VARIABLES
 const quizCard = document.querySelector('#dynamic-quiz-card');
 const startButton = document.querySelector('.start-quiz-button');
+const viewHighScoresButton = document.querySelector('#view-hs-button');
+const highScoresElement = document.querySelector('#high-scores-container');
+const scoresList = document.querySelector('#high-scores-list');
+const closeButton = document.querySelector('#close-btn');
 const timerBarElement = document.querySelector('#timer-bar');
 const countdownElement = document.querySelector('#countdown');
 const endCardTitleElement = document.createElement('h2');
@@ -19,9 +23,8 @@ const initialsInput = document.createElement('input');
 initialsInput.setAttribute('id', 'initials-input');
 initialsInput.setAttribute('maxlength', 3);
 
-const saveInitialsButton = document.createElement('button');
-saveInitialsButton.setAttribute('id', 'save-initials-button');
-saveInitialsButton.textContent = 'Save Score';
+const saveScoreButton = document.createElement('button');
+saveScoreButton.setAttribute('id', 'save-score-button');
 
 const retakeQuizButton = document.createElement('button');
 retakeQuizButton.classList.add('start-quiz-button');
@@ -85,18 +88,62 @@ const questions = [{
 //If the user answers a question incorrectly, time (5 seconds) is subratcted from the timer, and the user must try to answer the question again
 //If the user answers correctly, the next question is displayed
 
+let hiScoresArr = [];
+// let hiScoresArr = JSON.parse(localStorage.getItem('Scores'));
+
 
 
 // FUNCTIONS
 
 // Function to get the Highscores from local storage
+
 function init() {
-    getHighscores();
+    if (localStorage.getItem('Scores')) {
+        hiScoresArr = JSON.parse(localStorage.getItem('Scores'));
+    } else {
+        hiScoresArr = [];
+    }
+
+    renderHighScores();
 }
 
-function getHighscores() {
-    
+function renderHighScores() {
+    scoresList.innerHTML = '';
+    if (hiScoresArr) {
+        let sortedScores = hiScoresArr.sort().reverse();
+        for (let i = 0; i < sortedScores.length; i++) {
+            highScoreItem = document.createElement('li');
+            highScoreItem.textContent = sortedScores[i];
+            scoresList.append(highScoreItem);
+        }
+    } else {
+        // Do nothing
+    }
 }
+
+
+
+
+function saveScore() {
+    let currentInitials = initialsInput.value;
+
+    // Changed button style to green and disable so score cant be saved again.
+
+    if (initialsInput.value.length > 1) {
+        stringifiedScore = countdownCount.toString();
+        hiScoresArr.push(stringifiedScore + ' - ' + currentInitials);
+        localStorage.setItem('Scores', JSON.stringify(hiScoresArr));
+        renderHighScores();
+        saveScoreButton.textContent = 'Score Saved!'
+        saveScoreButton.disabled = true;
+    } else {
+        alert('Must enter initials to save score!');
+    }
+}
+
+// function renderHighScores() {
+       
+// }
 
 function startQuiz() {
     console.log(questions)
@@ -139,8 +186,11 @@ function renderEndCardTags() {
 function renderWinUI() {
     finalScoreElement.textContent = countdownCount;
     quizCard.append(finalScoreElement);
+    initialsInput.value = '';
     quizCard.append(initialsInput);
-    quizCard.append(saveInitialsButton);
+    quizCard.append(saveScoreButton);
+    saveScoreButton.textContent = 'Save Score!';
+    saveScoreButton.disabled = false;
 }
 
 // A Fisher-Yates algorithm expressed in a JavaScript Function to shuffle the order of any array that is passed as an argument when the function is called. 
@@ -212,7 +262,9 @@ function startCountdown() {
     timerBarPosition = 0;
     countdownElement.textContent = countdownCount;
     timerBarElement.style.width = '100%';
-    timerBarElement.style.marginLeft = '0%'
+    timerBarElement.style.marginLeft = '0%';
+    timerBarElement.style.backgroundColor = '#2cb978';
+
 
     countdown = setInterval(function () {
         countdownCount--;
@@ -267,10 +319,20 @@ retakeQuizButton.addEventListener('click', function () {
     startQuiz();
 });
 
+saveScoreButton.addEventListener('click', saveScore);
+
+viewHighScoresButton.addEventListener('click', function () {
+    highScoresElement.style.display = 'block';
+});
+
+closeButton.addEventListener('click', function () {
+    highScoresElement.style.display = 'none';
+});
 
 
 
 
+init ();
 
 
 

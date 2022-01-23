@@ -174,7 +174,7 @@ html, * {
   outline: none;
 }
 
-button#save-initials-button {
+button#save-score-button {
     display: inline-block;
     margin-left: 8px;
     height: 40px;
@@ -186,10 +186,81 @@ button#save-initials-button {
     color: #333;
 }
 
-button#save-initials-button:hover {
+button#save-score-button:hover {
   color: #fff;
   background-color: #333;
   transition: background-color .3s, color .3s;
 }
 
+button#save-score-button:disabled {
+  background-color: #2cb978;
+  color: #fff;
+  border: none;
+  cursor: default;
+}
+
+
+/***** High Scores Styles *****/
+
+aside#high-scores-container {
+  width: 30%;
+  height: 100%;
+  border-left: 2px solid #333;
+  background-color: #FAF9F6;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 9999;
+  display: none;
+}
+
+#high-scores-container i {
+  cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2em;
+}
+
+#high-scores-content {
+  margin: 4rem 1rem;
+}
+
+#high-scores-content h2 {
+  border-bottom: 2px solid #333;
+  padding-bottom: 1rem;
+}
+
+#high-scores-content ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+#high-scores-content li {
+  flex-basis: content;
+}
+
+#high-scores-content li:nth-of-type(1) {
+  padding: 1rem;
+  background: linear-gradient(to left, #FDE08D, #DF9F28);
+  color: #fff;
+  border-radius: 5px;
+}
+
+#high-scores-content li:nth-of-type(2) {
+  padding: 1rem;
+  background: linear-gradient(to right, #2f4353, #d2ccc4);
+  color: #fff;
+  border-radius: 5px;
+}
+
+#high-scores-content li:nth-of-type(3) {
+  padding: 1rem;
+  background: linear-gradient(to right, #772f1a, #f2a65a);
+  color: #fff;
+  border-radius: 5px;
+}
 
