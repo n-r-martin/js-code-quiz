@@ -50,34 +50,54 @@ let hiScoresArr = [];
 
 //Defining all the questions and storing them in an object
 const questions = [{
-    "question": "What is the capital of Bangladesh?",
-    "choice": ["Dhaka", "Chittagong", "Sylhet"],
-    "correct": "Dhaka"
+    "question": "The localstorage fucntionality of a web browser will accept which of the following data types?",
+    "choice": ["String", "Boolean", "Number", "All of them"],
+    "correct": "String"
     },
     {
-    "question": "What is the name of the largest planet in the solar system?",
-    "choice": ["Earth", "Jupiter", "Uranus"], 
-    "correct": "Jupiter"
+    "question": "Which of the following methods will disable the standard built-in behavor of certain HTML elements?",
+    "choice": [".preventAction()", ".preventDefault()", ".block()", ".diasbleDefault()"], 
+    "correct": ".preventDefault()"
     },
     { 
-    "question": "What is the capital of New York?",
-    "choice": ["Manhattan", "NYC", "Albany"],  
-    "correct": "Albany"
+    "question": "If I want to allow the value of a variable to be updated, which of the following can I use to initialize that variable?",
+    "choice": ["var", "const", "let", "var & let", "var & const"],  
+    "correct": "var & let"
    },
    { 
-    "question": "How many bones does the human body have?",
-    "choice": ["109", "206", "114"],  //quizObj[2].choice[0],quizObj[2].choice[1]
-    "correct": "206"
+    "question": "When a function produces a value, it is said to _________ that value.",
+    "choice": ["resolve", "return", "result", "report"], 
+    "correct": "return"
 },
 { 
-    "question": "What is the alter ego of Batman?",
-    "choice": ["Bruce Banner", "Bruce Wayne", "Tony Stark"],  //quizObj[2].choice[0],quizObj[2].choice[1]
-    "correct": "Bruce Wayne"
+    "question": "Values that are passed to a function when it is invoked are called __________.",
+    "choice": ["Arguments", "Variables", "Parameters", "Callbacks"],  
+    "correct": "Arguments"
 },
 { 
-    "question": "How many books are there in the Harry Potter series?",
-    "choice": ["7", "5", "8"],  //quizObj[2].choice[0],quizObj[2].choice[1]
-    "correct": "7"
+    "question": "A block of code that executes a multiple number of times while a certain condition is present is called a/an _________.",
+    "choice": ["circuit", "conditional", "iterative", "loop"],  
+    "correct": "loop"
+},
+{ 
+    "question": "Which of the following operators will add the value of the right operand to the variable AND reassign the variable to equal the result?",
+    "choice": ["++", "=+", "+=", "=="], 
+    "correct": "+="
+},
+{ 
+    "question": "JavaScript accesses HTML using which of the following models?",
+    "choice": ["JOM", "DOM", "ROM", "COM"],  
+    "correct": "DOM"
+},
+{ 
+    "question": "Which of the following methods would you use to push an element to the document via JavaScript?",
+    "choice": [".append()", ".attach", ".addElement()", ".insert()"],  
+    "correct": ".append()"
+},
+{ 
+    "question": "In order to store groups of data in a single variable, we can use a/an __________",
+    "choice": ["object", "dataset", "array", "bundle"],  
+    "correct": "array"
 }
 ];
 
