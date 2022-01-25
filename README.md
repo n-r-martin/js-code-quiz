@@ -13,3 +13,11 @@ If the user runs out of time before the quiz is over, they are presented with a 
 The highscroes are written to local storage in the browser and thereby persist on page refresh. The user also has the ability to clear the highscores from local storage directly from the UI. 
 
 ## Screenshots
+
+![Image of Password Generator Component.](img/jsQuizLanding.png)
+
+![Image of Password Generator Component.](img/jsQuizIncorrectAnswers.png)
+
+![Image of Password Generator Component.](img/jsQuizSuccess.png)
+
+![Image of Password Generator Component.](img/jsQuizHighscores.png)
