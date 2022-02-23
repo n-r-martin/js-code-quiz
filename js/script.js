@@ -213,7 +213,7 @@ function renderQuestion(shuffledQuestions) {
        choice = document.createElement("li");
        choice.setAttribute("data-choice", currentQuestionObj.choice[i]);
        choice.classList.add('choice');
-       choice.setAttribute("id", "choice-" +i);
+       choice.setAttribute("id", "choice-" + i);
        choice.textContent = currentQuestionObj.choice[i];
        answersList.appendChild(choice);  
     }   
